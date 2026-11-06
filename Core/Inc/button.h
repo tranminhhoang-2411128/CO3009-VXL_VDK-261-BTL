@@ -22,9 +22,10 @@
 
 #define TIMER_HOLD_CHECK 200
 
-extern int button_flag[];
-extern int hold_flag[];
+extern volatile int button_flag[];
+extern volatile int hold_flag[];
 
+void btnInit();
 void getInput();
 
 #endif /* INC_BUTTON_H_ */

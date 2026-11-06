@@ -6,8 +6,13 @@
  */
 #include "software_timer.h"
 
-int timer_flag[NUMBER_OF_S_TIMERS] = {0};
-int timer_counter[NUMBER_OF_S_TIMERS] = {0};
+volatile int timer_flag[NUMBER_OF_S_TIMERS];
+int timer_counter[NUMBER_OF_S_TIMERS];
+
+void timerInit(){
+	for (int i = 0; i < NUMBER_OF_S_TIMERS; i++){
+		timer_flag[i] = 0;
+}
 
 void setTimer(int timer_index, int timer_duration){
 	timer_flag[timer_index] = 0;

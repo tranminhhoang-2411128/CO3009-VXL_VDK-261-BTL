@@ -98,6 +98,8 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
+  timerInit();
+  btnInit();
   setTimer(0, 500);
   setTimer(1, 1000);
   setTimer(2, 2000);

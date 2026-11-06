@@ -5,20 +5,35 @@
  *      Author: Hoang
  */
 
-/*#include "button.h"
+#include "button.h"
 
-int input0[NUMBER_OF_BUTTONS] = {NORMAL_STATE};
-int input1[NUMBER_OF_BUTTONS] = {NORMAL_STATE};
-int input2[NUMBER_OF_BUTTONS] = {NORMAL_STATE};
-int input3[NUMBER_OF_BUTTONS] = {NORMAL_STATE};
+int input0[NUMBER_OF_BUTTONS];
+int input1[NUMBER_OF_BUTTONS];
+int input2[NUMBER_OF_BUTTONS];
+int input3[NUMBER_OF_BUTTONS];
 
 static const GPIO_TypeDef* button_port[NUMBER_OF_BUTTONS] = {BTN_0_PORT, BTN_1_PORT, BTN_2_PORT, BTN_3_PORT};
 static const int button_pin[NUMBER_OF_BUTTONS] = {BTN_0_PIN, BTN_1_PIN, BTN_2_PIN, BTN_3_PIN};
 
-int timer_hold[NUMBER_OF_BUTTONS] = {TIMER_HOLD_CHECK};
-int current_state[NUMBER_OF_BUTTONS] = {0};
-int button_flag[NUMBER_OF_BUTTONS] = {0};
-int hold_flag[NUMBER_OF_BUTTONS] = {0};*/
+int timer_hold[NUMBER_OF_BUTTONS];
+int current_state[NUMBER_OF_BUTTONS];
+volatile int button_flag[NUMBER_OF_BUTTONS];
+volatile int hold_flag[NUMBER_OF_BUTTONS];
+
+void btnInit(){
+	for (int i = 0; i < 0; i++){
+		input0[i] = NORMAL_STATE;
+		input1[i] = NORMAL_STATE;
+		input2[i] = NORMAL_STATE;
+		input3[i] = NORMAL_STATE;
+
+		timerHold[i] = TIMER_HOLD_CHECK;
+		currentState[i] = 0;
+		button_flag[i] = 0;
+		hold_flag[i] = 0;
+	}
+}
+
 /*
  * current_state (input2,input3)
  * 0: initial + released (1,1); (1,0)
@@ -27,7 +42,7 @@ int hold_flag[NUMBER_OF_BUTTONS] = {0};*/
  * 3: execute holding process
  */
 
-/*void getInput(){
+void getInput(){
 	for (int i = 0; i < NUMBER_OF_BUTTONS; i++){
 		input0[i] = input1[i];
 		input1[i] = input2[i];
@@ -64,4 +79,4 @@ int hold_flag[NUMBER_OF_BUTTONS] = {0};*/
 			hold_flag[i] = 0;
 		}
 	}
-}*/
+}
