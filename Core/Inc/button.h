@@ -10,15 +10,15 @@
 
 #include "main.h"
 
-#define NUMBER_OF_BUTTONS 3
+#define NUMBER_OF_BUTTONS 4
 
 #define ACTIVE_STATE GPIO_PIN_RESET
 #define NORMAL_STATE GPIO_PIN_SET
 
-#define BTN_PORT GPIOA
-#define BTN_0_PIN GPIO_PIN_6
-#define BTN_1_PIN GPIO_PIN_7
-#define BTN_2_PIN GPIO_PIN_8
+#define BTN_0_Pin GPIO_PIN_6
+#define BTN_1_Pin GPIO_PIN_7
+#define BTN_2_Pin GPIO_PIN_8
+#define BTN_3_Pin GPIO_PIN_9
 
 #define TIMER_HOLD_CHECK 200
 

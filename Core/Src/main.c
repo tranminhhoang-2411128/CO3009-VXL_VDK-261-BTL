@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "global.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,12 +98,50 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
+  setTimer(0, 500);
+  setTimer(1, 1000);
+  setTimer(2, 2000);
+  uint8_t found[8] = {0};
+  int n = 0;
+  for (uint8_t addr = 1; addr < 128; addr++) {
+          if (HAL_I2C_IsDeviceReady(&hi2c1, addr << 1, 1, 10) == HAL_OK)
+              if (n < 8) found[n++] = addr;   // đặt breakpoint để xem mảng found
+      }
+
+  static int i = 0;
+  static int j = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if (timer_flag[0] == 1){
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+		setTimer(0, 500);
+	}
+
+
+    if (timer_flag[1] == 1){
+	    i = (i < 4)? i + 1 : 0;
+    	HAL_GPIO_WritePin(TL1_A_GPIO_Port, TL1_A_Pin, (i >> 1) & 1);
+	    HAL_GPIO_WritePin(TL1_B_GPIO_Port, TL1_B_Pin, i & 1);
+	    setTimer(1, 2000);
+    }
+
+    if (timer_flag[2] == 1){
+    	j = (j < 4)? j + 1 : 0;
+        HAL_GPIO_WritePin(TL2_A_GPIO_Port, TL2_A_Pin, (j >> 1) & 1);
+    	HAL_GPIO_WritePin(TL2_B_GPIO_Port, TL2_B_Pin, j & 1);
+    	setTimer(2, 2000);
+    }
+
+    /*for (int scan = 0; scan < 4; scan++){
+    	if (button_flag[scan] == 1){
+    	    	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    	    	button_flag[scan] = 0;
+    	    }
+    }*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -278,6 +316,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, TL2_A_Pin|TL1_B_Pin|TL2_B_Pin|TL1_A_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
@@ -291,6 +332,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : TL2_A_Pin TL1_B_Pin TL2_B_Pin TL1_A_Pin */
+  GPIO_InitStruct.Pin = TL2_A_Pin|TL1_B_Pin|TL2_B_Pin|TL1_A_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
@@ -300,7 +348,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	timerRun();
-	getInput();
+	//getInput();
 }
 /* USER CODE END 4 */
 
