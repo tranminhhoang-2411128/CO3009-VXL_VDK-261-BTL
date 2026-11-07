@@ -12,6 +12,7 @@ int timer_counter[NUMBER_OF_S_TIMERS];
 void timerInit(){
 	for (int i = 0; i < NUMBER_OF_S_TIMERS; i++){
 		timer_flag[i] = 0;
+	}
 }
 
 void setTimer(int timer_index, int timer_duration){

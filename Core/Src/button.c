@@ -12,8 +12,9 @@ int input1[NUMBER_OF_BUTTONS];
 int input2[NUMBER_OF_BUTTONS];
 int input3[NUMBER_OF_BUTTONS];
 
-static const GPIO_TypeDef* button_port[NUMBER_OF_BUTTONS] = {BTN_0_PORT, BTN_1_PORT, BTN_2_PORT, BTN_3_PORT};
-static const int button_pin[NUMBER_OF_BUTTONS] = {BTN_0_PIN, BTN_1_PIN, BTN_2_PIN, BTN_3_PIN};
+static GPIO_TypeDef* button_port[NUMBER_OF_BUTTONS] = {BTN_1_GPIO_Port, BTN_2_GPIO_Port
+															, BTN_3_GPIO_Port, BTN_4_GPIO_Port};
+static const int button_pin[NUMBER_OF_BUTTONS] = {BTN_1_Pin, BTN_2_Pin, BTN_3_Pin, BTN_4_Pin};
 
 int timer_hold[NUMBER_OF_BUTTONS];
 int current_state[NUMBER_OF_BUTTONS];
@@ -27,8 +28,8 @@ void btnInit(){
 		input2[i] = NORMAL_STATE;
 		input3[i] = NORMAL_STATE;
 
-		timerHold[i] = TIMER_HOLD_CHECK;
-		currentState[i] = 0;
+		timer_hold[i] = TIMER_HOLD_CHECK;
+		current_state[i] = 0;
 		button_flag[i] = 0;
 		hold_flag[i] = 0;
 	}

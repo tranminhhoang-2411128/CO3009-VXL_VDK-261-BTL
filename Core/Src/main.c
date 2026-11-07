@@ -23,6 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "global.h"
+#include "button.h"
+#include "traffic_light.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -118,11 +120,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	if (timer_flag[0] == 1){
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-		setTimer(0, 500);
-	}
-
 
     if (timer_flag[1] == 1){
 	    i = (i < 4)? i + 1 : 0;
@@ -138,12 +135,12 @@ int main(void)
     	setTimer(2, 2000);
     }
 
-    /*for (int scan = 0; scan < 4; scan++){
+    for (int scan = 0; scan < 4; scan++){
     	if (button_flag[scan] == 1){
     	    	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
     	    	button_flag[scan] = 0;
     	    }
-    }*/
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -319,7 +316,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, TL2_A_Pin|TL1_B_Pin|TL2_B_Pin|TL1_A_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, D6_Pin|D3_Pin|D5_Pin|D4_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -334,12 +331,30 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TL2_A_Pin TL1_B_Pin TL2_B_Pin TL1_A_Pin */
-  GPIO_InitStruct.Pin = TL2_A_Pin|TL1_B_Pin|TL2_B_Pin|TL1_A_Pin;
+  /*Configure GPIO pins : D6_Pin D3_Pin D5_Pin D4_Pin */
+  GPIO_InitStruct.Pin = D6_Pin|D3_Pin|D5_Pin|D4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : D9_Pin */
+  GPIO_InitStruct.Pin = D9_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(D9_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : D7_Pin D8_Pin */
+  GPIO_InitStruct.Pin = D7_Pin|D8_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : D10_Pin */
+  GPIO_InitStruct.Pin = D10_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(D10_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
@@ -350,7 +365,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	timerRun();
-	//getInput();
+	getInput();
 }
 /* USER CODE END 4 */
 
