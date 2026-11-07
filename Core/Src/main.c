@@ -102,44 +102,43 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   timerInit();
   btnInit();
-  setTimer(0, 500);
-  setTimer(1, 1000);
-  setTimer(2, 2000);
-  uint8_t found[8] = {0};
-  int n = 0;
-  for (uint8_t addr = 1; addr < 128; addr++) {
-          if (HAL_I2C_IsDeviceReady(&hi2c1, addr << 1, 1, 10) == HAL_OK)
-              if (n < 8) found[n++] = addr;   // đặt breakpoint để xem mảng found
-      }
+  setTimer(0, 10000);
 
-  static int i = 0;
-  static int j = 0;
+  int TL_state = OFF;
+  trafficSet(1, TL_state);
+  trafficSet(2, TL_state);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if (timer_flag[0] == 1){
+		switch (TL_state) {
+			case OFF:
+				TL_state = RED;
+				break;
 
-    if (timer_flag[1] == 1){
-	    i = (i < 4)? i + 1 : 0;
-    	HAL_GPIO_WritePin(TL1_A_GPIO_Port, TL1_A_Pin, (i >> 1) & 1);
-	    HAL_GPIO_WritePin(TL1_B_GPIO_Port, TL1_B_Pin, i & 1);
-	    setTimer(1, 2000);
-    }
+			case YELLOW:
+				TL_state = RED;
+				break;
 
-    if (timer_flag[2] == 1){
-    	j = (j < 4)? j + 1 : 0;
-        HAL_GPIO_WritePin(TL2_A_GPIO_Port, TL2_A_Pin, (j >> 1) & 1);
-    	HAL_GPIO_WritePin(TL2_B_GPIO_Port, TL2_B_Pin, j & 1);
-    	setTimer(2, 2000);
-    }
+			case GREEN:
+				TL_state = YELLOW;
+				break;
 
-    for (int scan = 0; scan < 4; scan++){
-    	if (isButtonPressed(scan) == 1){
-    	    	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-    	    }
-    }
+			case RED:
+				TL_state = GREEN;
+				break;
+
+			default:
+				break;
+		}
+
+		trafficSet(1, TL_state);
+		trafficSet(2, TL_state);
+		setTimer(0, 1000);
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -77,7 +77,7 @@ void getInput(){
 		}
 		else {
 			current_state[i] = 0;
-			hold_flag[i] = 1;
+			hold_flag[i] = 0;
 		}
 	}
 }

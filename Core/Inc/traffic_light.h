@@ -19,4 +19,12 @@
 #define TL2_B_GPIO_Port D5_GPIO_Port
 #define TL2_B_Pin D5_Pin
 
+//Based on the hardware traffic light module
+#define OFF 0b00
+#define YELLOW 0b01
+#define GREEN 0b10
+#define RED 0b11
+
+void trafficSet(int lane, int state);
+
 #endif /* INC_TRAFFIC_LIGHT_H_ */
