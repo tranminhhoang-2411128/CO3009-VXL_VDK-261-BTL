@@ -18,8 +18,8 @@ static const int button_pin[NUMBER_OF_BUTTONS] = {BTN_1_Pin, BTN_2_Pin, BTN_3_Pi
 
 int timer_hold[NUMBER_OF_BUTTONS];
 int current_state[NUMBER_OF_BUTTONS];
-volatile int button_flag[NUMBER_OF_BUTTONS];
-volatile int hold_flag[NUMBER_OF_BUTTONS];
+int button_flag[NUMBER_OF_BUTTONS];
+int hold_flag[NUMBER_OF_BUTTONS];
 
 void btnInit(){
 	for (int i = 0; i < 0; i++){
@@ -77,7 +77,22 @@ void getInput(){
 		}
 		else {
 			current_state[i] = 0;
-			hold_flag[i] = 0;
+			hold_flag[i] = 1;
 		}
 	}
+}
+
+int isButtonPressed(int i){
+	if (button_flag[i] == 1)
+	{
+		button_flag[i] = 0;
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+int isButtonHeld(int i){
+	return hold_flag[i]; //Only lowers the flag when the button is let go
 }

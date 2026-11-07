@@ -136,9 +136,8 @@ int main(void)
     }
 
     for (int scan = 0; scan < 4; scan++){
-    	if (button_flag[scan] == 1){
+    	if (isButtonPressed(scan) == 1){
     	    	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-    	    	button_flag[scan] = 0;
     	    }
     }
     /* USER CODE END WHILE */

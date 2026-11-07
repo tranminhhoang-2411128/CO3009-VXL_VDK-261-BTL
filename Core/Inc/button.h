@@ -26,10 +26,9 @@
 
 #define TIMER_HOLD_CHECK 200
 
-extern volatile int button_flag[];
-extern volatile int hold_flag[];
-
 void btnInit();
 void getInput();
+int isButtonPressed(int i);
+int isButtonHeld(int i);
 
 #endif /* INC_BUTTON_H_ */
