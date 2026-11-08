@@ -102,7 +102,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   timerInit();
   btnInit();
-  setTimer(0, 10000);
+  setTimer(0, 1000);
 
   int TL_state = OFF;
   trafficSet(1, TL_state);
@@ -137,6 +137,7 @@ int main(void)
 
 		trafficSet(1, TL_state);
 		trafficSet(2, TL_state);
+
 		setTimer(0, 1000);
 	}
     /* USER CODE END WHILE */

@@ -20,10 +20,10 @@
 #define TL2_B_Pin D5_Pin
 
 //Based on the hardware traffic light module
-#define OFF 0b00
-#define YELLOW 0b01
-#define GREEN 0b10
-#define RED 0b11
+#define OFF 0
+#define GREEN 1
+#define YELLOW 2
+#define RED 3
 
 void trafficSet(int lane, int state);
 
