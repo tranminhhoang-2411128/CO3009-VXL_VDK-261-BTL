@@ -25,6 +25,8 @@
 #include "global.h"
 #include "button.h"
 #include "traffic_light.h"
+#include "dht20.h"
+//#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,17 +104,46 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   timerInit();
   btnInit();
-  setTimer(0, 1000);
 
+  setTimer(0, 1000); //Traffic light verification
   int TL_state = OFF;
   trafficSet(1, TL_state);
   trafficSet(2, TL_state);
+
+  setTimer(1, DHT20_INIT_TIME); //DHT20 verification
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if (timer_flag[1] == 1){
+		switch (DHT20_flag) {
+			case 0:
+				DHT20_Connect();
+				setTimer(1, DHT20_CALIB_TIME);
+				break;
+
+			case 1:
+				DHT20_TriggerMeasurement();
+				setTimer(1, DHT20_READ_TIME);
+				break;
+
+			case 2:
+				DHT20_ReadData();
+				setTimer(1, DHT20_CALIB_TIME);
+				break;
+
+			case 3:
+				DHT20_flag = 1;
+				setTimer(1, DHT20_READ_PERIOD);
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	if (timer_flag[0] == 1){
 		switch (TL_state) {
 			case OFF:
