@@ -12,10 +12,12 @@ int timer_counter[NUMBER_OF_S_TIMERS];
 void timerInit(){
 	for (int i = 0; i < NUMBER_OF_S_TIMERS; i++){
 		timer_flag[i] = 0;
+		timer_counter[i] = -1;
 	}
 }
 
 void setTimer(int timer_index, int timer_duration){
+	if (timer_index < 0 || timer_index >= NUMBER_OF_S_TIMERS) return;
 	timer_flag[timer_index] = 0;
 	timer_counter[timer_index] = timer_duration / ISR_TICK;
 }
@@ -24,10 +26,11 @@ void timerRun(){
 	for (int i = 0; i < NUMBER_OF_S_TIMERS; i++){
 		if (timer_counter[i] > 0){
 			timer_counter[i]--;
-		}
-		if (timer_counter[i] == 0){
-			timer_flag[i] = 1;
+			if (timer_counter[i] == 0){
+				timer_flag[i] = 1;
+			}
 		}
 	}
 }
+
 

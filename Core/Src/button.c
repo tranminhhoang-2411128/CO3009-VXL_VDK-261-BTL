@@ -22,7 +22,7 @@ int button_flag[NUMBER_OF_BUTTONS];
 int hold_flag[NUMBER_OF_BUTTONS];
 
 void btnInit(){
-	for (int i = 0; i < 0; i++){
+	for (int i = 0; i < NUMBER_OF_BUTTONS; i++){
 		input0[i] = NORMAL_STATE;
 		input1[i] = NORMAL_STATE;
 		input2[i] = NORMAL_STATE;
@@ -34,6 +34,7 @@ void btnInit(){
 		hold_flag[i] = 0;
 	}
 }
+
 
 /*
  * current_state (input2,input3)

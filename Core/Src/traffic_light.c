@@ -23,3 +23,10 @@ void trafficSet(int lane, int state){
 			break;
 	}
 }
+
+/* Compatibility wrapper for FSM code using traffic_set(lane, color) */
+void traffic_set(int lane, int color)
+{
+	trafficSet(lane, color);
+}
+

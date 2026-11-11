@@ -12,9 +12,12 @@
 #define NUMBER_OF_S_TIMERS 3
 
 extern volatile int timer_flag[NUMBER_OF_S_TIMERS];
+extern int timer_counter[NUMBER_OF_S_TIMERS];
 
 void timerInit();
 void setTimer(int timer_index, int timer_duration);
 void timerRun();
+void clearTimer(int timer_index);
+
 
 #endif /* INC_SOFTWARE_TIMER_H_ */

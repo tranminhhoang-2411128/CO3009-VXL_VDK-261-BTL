@@ -26,9 +26,12 @@
 
 #define TIMER_HOLD_CHECK 200
 
+extern int button_flag[NUMBER_OF_BUTTONS];
+
 void btnInit();
 void getInput();
 int isButtonPressed(int i);
 int isButtonHeld(int i);
 
 #endif /* INC_BUTTON_H_ */
+
