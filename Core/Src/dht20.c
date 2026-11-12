@@ -11,7 +11,7 @@
 #define DHT20_I2C_TIMEOUT  10                  /* ms */
 #define DHT20_MAX_POLL	   100				   /* times */
 
-
+I2C_HandleTypeDef hi2c1;
 int DHT20_flag = 0;
 float temp = 0.0f;
 float humi = 0.0f;
@@ -90,7 +90,8 @@ void DHT20_Connect(void)
 
     if (init_step == 0)
     {
-        if (!DHT20_ReadStatus())
+        status = DHT20_ReadStatus();
+    	if (!status)
             return;                         /* not connected, retry later */
 
         if ((status & 0x18) == 0x18)
@@ -140,7 +141,7 @@ void DHT20_ReadData(void)
         return;
     }
 
-    if (status & 0x80)                      /* Bit[7] = busy */
+    if (data[0] & 0x80)                      /* Bit[7] = busy */
     {
         if (++poll_count >= DHT20_MAX_POLL)
             DHT20_flag = 1;
@@ -148,7 +149,7 @@ void DHT20_ReadData(void)
     }
 
     /* status + 5 data bytes + CRC */
-    if (HAL_I2C_Master_Receive(DHT20_I2C, DHT20_HAL_ADDR, data, 7,
+    if (HAL_I2C_Master_Receive(&hi2c1, DHT20_HAL_ADDR, data, 7,
                                DHT20_I2C_TIMEOUT) != HAL_OK)
     {
         DHT20_flag = 1;
