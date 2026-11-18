@@ -9,6 +9,9 @@
 #define INC_GLOBAL_H_
 
 #include "main.h"
+#include "stdio.h"
 #include "software_timer.h"
+
+extern I2C_HandleTypeDef hi2c1;
 
 #endif /* INC_GLOBAL_H_ */

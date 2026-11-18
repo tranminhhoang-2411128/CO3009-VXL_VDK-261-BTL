@@ -26,7 +26,7 @@
 #include "button.h"
 #include "traffic_light.h"
 #include "dht20.h"
-//#include "lcd.h"
+#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -111,13 +111,46 @@ int main(void)
   trafficSet(2, TL_state);
 
   setTimer(1, DHT20_INIT_TIME); //DHT20 verification
+  setTimer(2, LCD_INIT_TIME); //LCD verification
+  char temp_humi_buffer[LCD_COLS + 1]; //cols + '\0'
+  char traffic_light_buffer[LCD_COLS + 1];
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	if (timer_flag[1] == 1){
+		if (timer_flag[0] == 1){
+			switch (TL_state) {
+				case OFF:
+					TL_state = RED;
+					break;
+
+				case YELLOW:
+					TL_state = RED;
+					break;
+
+				case GREEN:
+					TL_state = YELLOW;
+					break;
+
+				case RED:
+					TL_state = GREEN;
+					break;
+
+				default:
+					break;
+			}
+
+			trafficSet(1, TL_state);
+			trafficSet(2, TL_state);
+
+			snprintf(traffic_light_buffer, sizeof(traffic_light_buffer),
+					 "TL_1: %d  TL_2: %d", TL_state, TL_state);
+			setTimer(0, 1000);
+		}
+
+	  if (timer_flag[1] == 1){
 		switch (DHT20_flag) {
 			case 0:
 				DHT20_Connect();
@@ -136,6 +169,9 @@ int main(void)
 
 			case 3:
 				DHT20_flag = 1;
+				/* %f requires linker flag -u _printf_float (set in .cproject) */
+				snprintf(temp_humi_buffer, sizeof(temp_humi_buffer),
+				         "T:%4.1f%cC H:%4.1f%%", temp, 223, humi);
 				setTimer(1, DHT20_READ_PERIOD);
 				break;
 
@@ -144,32 +180,34 @@ int main(void)
 		}
 	}
 
-	if (timer_flag[0] == 1){
-		switch (TL_state) {
-			case OFF:
-				TL_state = RED;
+	if (timer_flag[2] == 1){
+		switch (LCD_flag) {
+			case 0:
+				LCD_Connect();
+				setTimer(2, LCD_STEP_TIME);
 				break;
 
-			case YELLOW:
-				TL_state = RED;
+			case 1:
+				LCD_Init();
+				setTimer(2, LCD_STEP_TIME);
 				break;
 
-			case GREEN:
-				TL_state = YELLOW;
+			case 2:
+				LCD_Print(traffic_light_buffer, 0);
+				setTimer(2, LCD_CALIB_TIME);
+				LCD_flag = 3;
 				break;
 
-			case RED:
-				TL_state = GREEN;
+
+			case 3:
+				LCD_Print(temp_humi_buffer, 1);
+				setTimer(2, 1000);
+				LCD_flag = 2;
 				break;
 
 			default:
 				break;
 		}
-
-		trafficSet(1, TL_state);
-		trafficSet(2, TL_state);
-
-		setTimer(0, 1000);
 	}
     /* USER CODE END WHILE */
 

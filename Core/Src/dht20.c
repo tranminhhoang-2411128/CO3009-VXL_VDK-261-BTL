@@ -11,7 +11,6 @@
 #define DHT20_I2C_TIMEOUT  10                  /* ms */
 #define DHT20_MAX_POLL	   100				   /* times */
 
-I2C_HandleTypeDef hi2c1;
 int DHT20_flag = 0;
 float temp = 0.0f;
 float humi = 0.0f;
