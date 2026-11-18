@@ -12,9 +12,9 @@
 
 #define DHT20_ADDR 0x38
 #define DHT20_INIT_TIME 200
-#define DHT20_CALIB_TIME 10
-#define DHT20_READ_TIME 80
-#define DHT20_READ_PERIOD 1000
+#define DHT20_CALIB_TIME 20
+#define DHT20_READ_TIME 90
+#define DHT20_READ_PERIOD 1010
 
 void DHT20_Connect();
 void DHT20_TriggerMeasurement();

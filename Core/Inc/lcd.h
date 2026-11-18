@@ -13,9 +13,8 @@
 
 void LCD_Connect();
 void LCD_Init();
-void LCD_SetDisplay();
+void LCD_SetBacklight(int status);
 void LCD_ClearDisplay();
-void LCD_SetCursor();
 //void LCD_Print (char* str, int row) (this is LCD 16x2)
 
 #endif /* INC_LCD_H_ */
