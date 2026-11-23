@@ -22,11 +22,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "global.h"
+#include "data_bus.h"
 #include "button.h"
 #include "traffic_light.h"
-#include "dht20.h"
-#include "lcd.h"
+#include "fsm_dht20.h"
+#include "fsm_lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,110 +104,17 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   timerInit();
   btnInit();
-
-  setTimer(0, 1000); //Traffic light verification
-  int TL_state = OFF;
-  trafficSet(1, TL_state);
-  trafficSet(2, TL_state);
-
-  setTimer(1, DHT20_INIT_TIME); //DHT20 verification
-  setTimer(2, LCD_INIT_TIME); //LCD verification
-  char temp_humi_buffer[LCD_COLS + 1] = "TempHum_default"; //cols + '\0'
-  char traffic_light_buffer[LCD_COLS + 1] = "Traffic_default";
+  fsm_dht20_init();
+  fsm_lcd_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		if (timer_flag[0] == 1){
-			switch (TL_state) {
-				case OFF:
-					TL_state = RED;
-					break;
-
-				case YELLOW:
-					TL_state = RED;
-					break;
-
-				case GREEN:
-					TL_state = YELLOW;
-					break;
-
-				case RED:
-					TL_state = GREEN;
-					break;
-
-				default:
-					break;
-			}
-
-			trafficSet(1, TL_state);
-			trafficSet(2, TL_state);
-
-			snprintf(traffic_light_buffer, sizeof(traffic_light_buffer),
-					 "TL_1: %d  TL_2: %d", TL_state, TL_state);
-			setTimer(0, 1000);
-		}
-
-	  if (timer_flag[1] == 1){
-		switch (DHT20_flag) {
-			case 0:
-				DHT20_Connect();
-				setTimer(1, DHT20_CALIB_TIME);
-				break;
-
-			case 1:
-				DHT20_TriggerMeasurement();
-				setTimer(1, DHT20_READ_TIME);
-				break;
-
-			case 2:
-				DHT20_ReadData();
-				setTimer(1, DHT20_CALIB_TIME);
-				break;
-
-			case 3:
-				DHT20_flag = 1;
-				/* %f requires linker flag -u _printf_float (set in .cproject) */
-				snprintf(temp_humi_buffer, sizeof(temp_humi_buffer),
-				         "T:%4.1f%cC H:%4.1f%%", temp, 223, humi);
-				setTimer(1, DHT20_READ_PERIOD);
-				break;
-
-			default:
-				break;
-		}
-	}
-
-	if (timer_flag[2] == 1){
-		switch (LCD_flag) {
-			case 0:
-				LCD_Connect();
-				setTimer(2, LCD_STEP_TIME);
-				break;
-
-			case 1:
-				LCD_Init();
-				setTimer(2, LCD_STEP_TIME);
-				break;
-
-			case 2:
-				LCD_Print(traffic_light_buffer, 0);
-				LCD_flag = 3;
-				break;
-
-
-			case 3:
-				LCD_Print(temp_humi_buffer, 1);
-				setTimer(2, 1000);
-				LCD_flag = 2;
-				break;
-
-			default:
-				break;
-		}
-	}
+	fsm_dht20_run();
+	fsm_lcd_run();
+	buffer_update();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

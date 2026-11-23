@@ -12,6 +12,9 @@
 #include "stdio.h"
 #include "software_timer.h"
 
+#define EVT_DHT20_NEW    (1 << 0)
+#define EVT_TRAFFIC_NEW  (1 << 1)
+
 extern I2C_HandleTypeDef hi2c1;
 
 #endif /* INC_GLOBAL_H_ */
