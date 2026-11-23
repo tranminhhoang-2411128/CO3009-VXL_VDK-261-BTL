@@ -112,8 +112,8 @@ int main(void)
 
   setTimer(1, DHT20_INIT_TIME); //DHT20 verification
   setTimer(2, LCD_INIT_TIME); //LCD verification
-  char temp_humi_buffer[LCD_COLS + 1]; //cols + '\0'
-  char traffic_light_buffer[LCD_COLS + 1];
+  char temp_humi_buffer[LCD_COLS + 1] = "TempHum_default"; //cols + '\0'
+  char traffic_light_buffer[LCD_COLS + 1] = "Traffic_default";
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -194,7 +194,6 @@ int main(void)
 
 			case 2:
 				LCD_Print(traffic_light_buffer, 0);
-				setTimer(2, LCD_CALIB_TIME);
 				LCD_flag = 3;
 				break;
 

@@ -80,7 +80,7 @@ static uint8_t LCD_Command(uint8_t cmd)
 /* Clear/Home need 1.52 ms: block other writes until it has elapsed */
 static uint8_t LCD_Ready(void)
 {
-    return (LCD_flag == 2) && (HAL_GetTick() - clear_tick >= LCD_CLEAR_TIME);
+    return (LCD_flag >= 2) && (HAL_GetTick() - clear_tick >= LCD_CLEAR_TIME);
 }
 
 /* ------------------------------------------------------------------ */
