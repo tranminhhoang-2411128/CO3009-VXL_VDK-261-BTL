@@ -1,7 +1,7 @@
 #include "state_auto_yellow1_red2.h"
 #include "traffic_light.h"
-#include "software_timer.h"
-#define TIMER_TRAFFIC 0
+#include "data_bus.h"
+#define TIMER_TRAFFIC 2
 void state_auto_yellow1_red2_enter(void){
     fsm_status = FSM_STATE_AUTO_YELLOW1_RED2;
     traffic_set(LANE_1, YELLOW);

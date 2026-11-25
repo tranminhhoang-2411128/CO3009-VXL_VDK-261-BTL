@@ -6,8 +6,13 @@
 
 #include "main.h"
 #include <stdint.h>
+#include <stdio.h>
 
 #include "software_timer.h"
+
+/* Event flags (data bus) */
+#define EVT_DHT20_NEW    (1 << 0)
+#define EVT_TRAFFIC_NEW  (1 << 1)
 
 /* Compatibility with traffic light module naming */
 #define LANE_1 1
@@ -59,13 +64,13 @@ extern int time_red;
 extern int time_green;
 extern int time_yellow;
 
-/* LCD top line buffer (FSM writes; display task would read) */
+/* LCD top line buffer (FSM writes; display task reads it) */
 extern char lcd_top[17];
 
-/* DHT20 placeholders (skipped for now, kept for compatibility) */
-extern int16_t g_temp_x10;
-extern uint8_t g_humi;
-extern uint8_t g_sensor_ok;
+/* DHT20 cached readings (updated by DHT20 task/finish) */
+extern int16_t g_temp_x10;   /* 285 = 28.5 C */
+extern uint8_t g_humi;       /* % */
+extern uint8_t g_sensor_ok;  /* 0 if not ready/error */
 
 /* Button flags exposed by button module (set on press events) */
 extern int button_flag[];
@@ -75,4 +80,7 @@ extern int timer_counter[];
 
 void clearTimer(int timer_index);
 
+extern I2C_HandleTypeDef hi2c1;
+
 #endif /* INC_GLOBAL_H_ */
+

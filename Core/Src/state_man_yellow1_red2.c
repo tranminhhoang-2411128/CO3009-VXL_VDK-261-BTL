@@ -1,12 +1,12 @@
 #include "state_man_yellow1_red2.h"
 #include "traffic_light.h"
 #include "button.h"
-#include <stdio.h>
+#include "data_bus.h"
 void state_man_yellow1_red2_enter(void){
     fsm_status = FSM_STATE_MAN_YELLOW1_RED2;
     traffic_set(LANE_1, YELLOW);
     traffic_set(LANE_2, RED);
-    //snprintf(lcd_top, sizeof(lcd_top), "MAN: Y1-R2");
+    snprintf(first_row_buffer, sizeof(first_row_buffer), "MAN: Y1-R2");
 }
 void state_man_yellow1_red2_run(void){
     if (button_flag[1]) {

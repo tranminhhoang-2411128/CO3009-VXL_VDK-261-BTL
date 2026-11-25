@@ -21,9 +21,10 @@
 
 //Based on the hardware traffic light module
 #define OFF 0
-#define YELLOW 2
 #define GREEN 1
+#define YELLOW 2
 #define RED 3
+
 
 void trafficSet(int lane, int state);
 void traffic_set(int lane, int color);

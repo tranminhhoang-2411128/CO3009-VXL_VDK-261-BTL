@@ -1,5 +1,6 @@
 #include "fsm_automatic.h"
 #include "global.h"
+#include "data_bus.h"
 #include "state_auto_red1_green2.h"
 #include "state_auto_red1_yellow2.h"
 #include "state_auto_green1_red2.h"
@@ -12,7 +13,7 @@ void fsm_automatic_run(void)
 
     /* AUTO_INIT: run once on reset or after tuning confirm */
     if (fsm_status == FSM_STATE_INIT) {
-        //snprintf(lcd_top, sizeof(lcd_top), "MODE: AUTO");
+        snprintf(first_row_buffer, sizeof(first_row_buffer), "MODE: AUTO");
         state_auto_red1_green2_enter();
         return;
     }

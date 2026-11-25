@@ -17,7 +17,7 @@ void mode_manager_run(void)
     switch (fsm_mode) {
     case FSM_MODE_AUTOMATIC:
         /* AUTO -> MANUAL: stop auto timer, enter safe MAN_ALL_RED */
-        clearTimer(0);
+        clearTimer(2);
         traffic_set(LANE_1, RED);
         traffic_set(LANE_2, RED);
         fsm_mode = FSM_MODE_MANUAL;

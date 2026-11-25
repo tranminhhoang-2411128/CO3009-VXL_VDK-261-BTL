@@ -1,5 +1,6 @@
 #include "fsm_tuning.h"
 #include "global.h"
+#include "data_bus.h"
 #include "button.h"
 #include "traffic_light.h"
 #include "software_timer.h"
@@ -20,16 +21,16 @@ static void update_tuning_display(void)
 {
     switch (fsm_status) {
     case FSM_STATE_TUNE_RED:
-        //snprintf(lcd_top, sizeof(lcd_top), "TUNE RED:%2ds", temp_red);
+        snprintf(first_row_buffer, sizeof(first_row_buffer), "TUNE RED:%2ds", temp_red);
         break;
     case FSM_STATE_TUNE_GREEN:
-        //snprintf(lcd_top, sizeof(lcd_top), "TUNE GREEN:%2ds", temp_green);
+        snprintf(first_row_buffer, sizeof(first_row_buffer), "TUNE GREEN:%2ds", temp_green);
         break;
     case FSM_STATE_TUNE_YELLOW:
-        //snprintf(lcd_top, sizeof(lcd_top), "TUNE YELLOW:%2ds", temp_yellow);
+        snprintf(first_row_buffer, sizeof(first_row_buffer), "TUNE YELLOW:%2ds", temp_yellow);
         break;
     case FSM_STATE_TUNE_INVALID:
-        //snprintf(lcd_top, sizeof(lcd_top), "INVALID");
+        snprintf(first_row_buffer, sizeof(first_row_buffer), "INVALID");
         break;
     default:
         break;
@@ -54,7 +55,7 @@ void fsm_tuning_init(void)
 void fsm_tuning_on_state_enter(fsm_state_t state)
 {
     if (state == FSM_STATE_TUNE_INVALID) {
-        //snprintf(lcd_top, sizeof(lcd_top), "INVALID");
+        snprintf(first_row_buffer, sizeof(first_row_buffer), "INVALID");
         setTimer(TIMER_TUNING_ERROR, 1500);
     } else {
         update_tuning_display();
@@ -134,7 +135,7 @@ void fsm_tuning_on_state_run(fsm_state_t state)
             /* Exit to AUTO via AUTO_INIT */
             fsm_mode = FSM_MODE_AUTOMATIC;
             fsm_status = FSM_STATE_INIT;
-            //snprintf(lcd_top, sizeof(lcd_top), "MODE: AUTO");
+            snprintf(first_row_buffer, sizeof(first_row_buffer), "MODE: AUTO");
         } else {
             /* Revert temps to current valid globals and show INVALID */
             temp_red = time_red / 1000;

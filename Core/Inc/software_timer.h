@@ -9,7 +9,15 @@
 #define INC_SOFTWARE_TIMER_H_
 
 #define ISR_TICK 10
-#define NUMBER_OF_S_TIMERS 3
+#define NUMBER_OF_S_TIMERS 4
+/*
+ * 0: DHT20 (hardware module)
+ * 1: LCD   (hardware module)
+ * 2: Traffic FSM
+ * 3: Tuning invalid display
+ */
+
+
 
 extern volatile int timer_flag[NUMBER_OF_S_TIMERS];
 extern int timer_counter[NUMBER_OF_S_TIMERS];
